@@ -6,80 +6,85 @@ html(lang='nl')
     title Amor datingsite
     link(rel='stylesheet', href='https://use.typekit.net/uyr6mwg.css')
     link(rel='stylesheet', href='/css/amor.css')
+    link(href='https://fonts.googleapis.com/css?family=Montserrat', rel="stylesheet")
+    script(src='/javascript/app.js')
+
   body
     header
-      section.menu
-        a.account(href='/account')
-          img.account-icon(src='img/user.svg', alt='Mijn profiel')
-        a.logout(href='/logout')
-          img.logout-icon(src='img/logout.svg', alt='Uitloggen')
-    section.submenu
-      h1 Amor
-    main
+      ul#header
+        li#logonav
+          img#navlogo(src="/img/Logo_Amor.png", alt="Logo Amor")
+        li#menunav
+          a.account(href='/account')
+            img.account-icon(src='img/user.svg', alt='Mijn profiel')
+        li#menunav
+          a.logout(href='/logout')
+           img.logout-icon(src='img/logout.svg', alt='Uitloggen')
+
+  #titlewrapper
+    h1 Dashboard
+
+  div#buttonwrapper
+    Button#filter(onclick="toggle()") Open Filter
+      
+  main
       aside
-        form.filter(action='/persons')
-          #category Filter op sport
-          ul#filterCheckboxes
-            li
-              input#atletiek(type='checkbox', name='atletiek', checked=request.query.atletiek=="on")
-              label(for='atletiek') Atletiek
-            li
-              input#fitness(type='checkbox', name='fitness', checked=request.query.fitness=="on")
-              label(for='fitness') Fitness
-            li
-              input#gymnastiek(type='checkbox' name='gymnastiek', checked=request.query.gymnastiek=="on")
-              label(for='gymnastiek') Gymnastiek
-            li
-              input#hardlopen(type='checkbox' name='hardlopen', checked=request.query.hardlopen=="on")
-              label(for='hardlopen') Hardlopen
-            li
-              input#hockey(type='checkbox' name='hockey', checked=request.query.hockey=="on")
-              label(for='hockey') Hockey
-            li
-              input#honkbal(type='checkbox' name='honkbal', checked=request.query.honkbal=="on")
-              label(for='honkbal') Honkbal
-            li
-              input#paardensport(type='checkbox' name='paardensport', checked=request.query.paardensport=="on")
-              label(for='paardensport') Paardensport
-            li
-              input#tennis(type='checkbox' name='tennis', checked=request.query.tennis=="on")
-              label(for='tennis') Tennis
-            li
-              input#schaatsen(type='checkbox' name ='schaatsen', checked=request.query.schaatsen=="on")
-              label(for='schaatsen') Schaatsen
-            li
-              input#voetbal(type='checkbox' name='voetbal', checked=request.query.voetbal=="on")
-              label(for='voetbal') Voetbal
-            li
-              input#volleybal(type='checkbox' name='volleybal', checked=request.query.volleybal=="on")
-              label(for='volleybal') Volleybal
-            li
-              input#waterpolo(type='checkbox' name='waterpolo', checked=request.query.waterpolo=="on")
-              label(for='waterpolo') Waterpolo
-            li
-              input#zwemmen(type='checkbox' name='zwemmen', checked=request.query.zwemmen=="on")
-              label(for='zwemmen') Zwemmen
-          button(type='submit' value=Submit id='button-filter') Filter
-          button(type='submit' value=Reset id='button-reset') Reset
+        form#formfilter.hide(action='/persons') 
+          span#filtertitel Filter op sport 
+          #inputwrapper        
+           label.container Atletiek
+             input(type='checkbox' name='atletiek' checked=request.query.atletiek=="on")
+             span.checkmark
+           label.container Fitness
+             input(type='checkbox' name='fitness' checked=request.query.fitness=="on")
+             span.checkmark
+           label.container Hardlopen
+             input(type='checkbox' name='hardlopen' checked=request.query.hardlopen=="on")
+             span.checkmark
+           label.container Hockey
+             input(type='checkbox' name='hockey' checked=request.query.hockey=="on")
+             span.checkmark
+           label.container Honkbal
+             input(type='checkbox' name='honkbal' checked=request.query.honkbal=="on")
+             span.checkmark
+           label.container Paardensport
+             input(type='checkbox' name='paardensport' checked=request.query.paardensport=="on")
+             span.checkmark
+           label.container Tennis
+             input(type='checkbox' name='tennis' checked=request.query.tennis=="on")
+             span.checkmark
+           label.container Schaatsen
+             input(type='checkbox' name='schaatsen' checked=request.query.schaatsen=="on")
+             span.checkmark
+           label.container Volleybal
+             input(type='checkbox' name='volleybal' checked=request.query.volleybal=="on")
+             span.checkmark
+           label.container Waterpolo
+             input(type='checkbox' name='waterpolo' checked=request.query.waterpolo=="on")
+             span.checkmark
+           label.container Zwemmen
+             input(type='checkbox' name='zwemmen' checked=request.query.zwemmen=="on")
+             span.checkmark
+          div#formbuttonwrapper   
+            button.filter(type='submit') Filter
+            button.filterreset(type='reset') Reset
 
       section.persons
           -for(var i = 0; i < persons.length; i++)
-              article
+
+            article
                   .article-container
                       .article-image-container
                           img.article-image(src='http://lorempixel.com/600/300/people?' + persons[i]._id)
-                      h2 #{persons[i].firstname} • #{persons[i].age} jaar • #{persons[i].sports ? persons[i].sports[0] : "" }
+                      h2 #{persons[i].firstname} • #{persons[i].age} jaar
+                      ul#li-wrapper
+                       each val in persons[i].sports
+                         li#tags-style= val
                       p #{persons[i].description}
-                      a(href='/person/' + persons[i]._id) Meer over mij!
-          
-          -if(persons.length>0)
-            article
-                button Meer studenten
-          -if(persons.length==0)
-            div 
-              | Geen personen gevonden
-    footer
+                      
+                      a(href='/person/' + persons[i]._id) Meer over mij!    
+          article
+              button Meer studenten
+  footer
       p
-        | Copyright Paulien©      
-    script(src='/js/persons.js')
-
+        | Copyright Paulien©
